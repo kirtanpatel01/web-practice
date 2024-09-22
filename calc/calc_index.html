@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Calc HTML</title>
+
+    <style>
+      body {
+        height: 100vh;
+        background-color: #e4f2ff;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .calc_main_box {
+        height: 48rem;
+        width: 32rem;
+        background-color: #303030;
+        border-radius: 0.5rem;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        padding: 1rem;
+      }
+
+      .calc_answer_block {
+        height: 8rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        align-items: flex-end;
+        background-color: #fff;
+        border-radius: 0.5rem;
+        border: solid 1px #8e8e8e;
+        padding: 1rem;
+        overflow-x: auto; 
+        white-space: nowrap; 
+        font-size: 2rem;
+      }
+
+      .calc_input_area {
+        color: #777777;
+        font-size: 1.5rem;
+      }
+
+      .btn_area {
+        height: 37rem;
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        grid-template-rows: repeat(5, 1fr);
+        gap: 1rem;
+        margin-top: 1rem;
+      }
+
+      .btn {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        border-radius: 0.2rem;
+        background-color: #ffcb46;
+        font-size: 1.8rem;
+        cursor: pointer;
+      }
+
+      .btn:hover {
+        background-color: #fff;
+      }
+
+      .btn:last-child {
+        background-color: #00ff0d;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="calc_main_box">
+      <div class="calc_answer_block">
+        <div class="calc_input_area">0</div>
+        <div class="calc_answer_area">0</div>
+      </div>
+      <div class="btn_area">
+        <div class="btn btn_clear_current">CE</div>
+        <div class="btn btn_backspace">BS</div>
+        <div class="btn btn_percentage">%</div>
+        <div class="btn btn_divide">/</div>
+        <div class="btn btn_seven">7</div>
+        <div class="btn btn_eight">8</div>
+        <div class="btn btn_nine">9</div>
+        <div class="btn btn_multiply">*</div>
+        <div class="btn btn_four">4</div>
+        <div class="btn btn_five">5</div>
+        <div class="btn btn_six">6</div>
+        <div class="btn btn_minus">-</div>
+        <div class="btn btn_one">1</div>
+        <div class="btn btn_two">2</div>
+        <div class="btn btn_three">3</div>
+        <div class="btn btn_plus">+</div>
+        <div class="btn btn_clear_all">C</div>
+        <div class="btn btn_zero">0</div>
+        <div class="btn btn_dot">.</div>
+        <div class="btn btn_equal">=</div>
+      </div>
+    </div>
+  </body>
+
+  <script>
+    const inputArea = document.querySelector(".calc_input_area");
+    const answerArea = document.querySelector(".calc_answer_area");
+    let currentValue = "";
+    let currentInput = "";
+    let operator = "";
+    let previousInput = "";
+
+    function handleInput(value) {}
+
+    function clearAll() {
+      currentValue = "";
+      currentInput = "";
+      previousInput = "";
+      operator = "";
+      displayValue(currentValue);
+      displayInput(currentInput);
+    }
+
+    function clearCurrent() {
+      currentValue = "";
+      displayValue(currentValue);
+    }
+
+    function handleBackspace() {
+      currentValue = currentValue.slice(0, -1);
+      displayValue(currentValue);
+    }
+
+    function appendValue(value) {
+      currentValue += value;
+      displayValue(currentValue);
+    }
+
+    function displayInput(value) {
+      inputArea.textContent = value || "0";
+    }
+
+    function displayValue(value) {
+      answerArea.textContent = value || "0";
+    }
+
+    function handleOperations(op) {
+      currentInput = currentInput + " " + currentValue + " " + op;
+      displayInput(currentInput);
+      clearCurrent();
+    }
+
+    function handleEqual() {
+      currentValue = "";
+      currentInput = "";
+      displayValue(currentValue);
+    }
+
+    function calculate() {
+      let result;
+      try {
+        currentInput = currentInput + " " + currentValue;
+        displayInput(currentInput);
+        const sanitizedInput = currentInput.replace(/\s+/g, " ");
+
+        const processedInput = handlePercentageExpression(sanitizedInput);
+
+        console.log(processedInput);
+        result = eval(processedInput);
+        result = parseFloat(result.toFixed(8));
+      } catch (error) {
+        result = "Error";
+      }
+      currentInput = "";
+      currentValue = "";
+      operator = "";
+      displayValue(result);
+    }
+
+    function handlePercentageExpression(input) {
+      const regex = /(\d+)\s*%\s*(\d+)/g;
+      return input.replace(regex, (match, percent, value) => {
+        const percentageValue = (parseFloat(percent) / 100) * parseFloat(value);
+        return percentageValue.toString();
+      });
+    }
+
+    document.querySelectorAll(".btn").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const btnValue = btn.textContent;
+
+        if (!isNaN(btnValue) || btnValue === ".") {
+          appendValue(btnValue);
+        } else if (["+", "-", "/", "*", "%"].includes(btnValue)) {
+          handleOperations(btnValue);
+        } else if (btnValue === "BS") {
+          handleBackspace();
+        } else if (btnValue === "C") {
+          clearAll();
+        } else if (btnValue === "CE") {
+          clearCurrent();
+        } else if (btnValue === "=") {
+          calculate();
+        }
+      });
+    });
+  </script>
+</html>
