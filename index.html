@@ -3,75 +3,90 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" type="image/x-icon" href="calc.ico">
-    <title>Calc HTML</title>
-
+    <link rel="icon" type="image/x-icon" href="calc.ico" />
+    <title>3D Calc HTML</title>
     <style>
       body {
         height: 100vh;
-        background-color: #e4f2ff;
+        background-color: #f0f0f0;
         margin: 0;
-        padding: 0;
         display: flex;
         justify-content: center;
         align-items: center;
+        perspective: 1000px; /* 3D Perspective */
       }
 
       .calc_main_box {
         height: 48rem;
         width: 32rem;
-        background-color: #303030;
-        border-radius: 0.5rem;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        padding: 1rem;
-      }
-
-      .calc_answer_block {
-        height: 8rem;
+        background: linear-gradient(145deg, #00062e, #1e1f25);
+        border-radius: 2rem;
+        box-shadow: 0 12px 25px rgba(0, 0, 0, 0.2);
         display: flex;
         flex-direction: column;
-        justify-content: space-around;
+        padding: 2rem;
+        /* transform: rotateX(10deg) rotateY(-15deg); 3D angle */
+        transition: all 0.3s ease;
+      }
+
+      .calc_main_box:hover {
+        transform: rotateX(0) rotateY(0);
+      }
+
+      /* Glass-like Answer Block */
+      .calc_answer_block {
+        height: 8rem;
+        background: rgba(74, 75, 78, 0.659);
+        border-radius: 1rem;
+        padding: 1.5rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
         align-items: flex-end;
-        background-color: #fff;
-        border-radius: 0.5rem;
-        border: solid 1px #8e8e8e;
-        padding: 1rem;
-        overflow-x: auto; 
-        white-space: nowrap; 
-        font-size: 2rem;
+        backdrop-filter: blur(10px); /* Glass Effect */
+        box-shadow: inset 0 2px 5px rgba(255, 255, 255, 0.3);
+        border: solid 1px rgba(255, 255, 255, 0.3);
+        font-size: 2.5rem;
+        color: white;
       }
 
       .calc_input_area {
-        color: #777777;
-        font-size: 1.5rem;
+        color: rgba(255, 255, 255, 0.7);
+        font-size: 1.2rem;
+        margin-bottom: 0.5rem;
       }
 
       .btn_area {
-        height: 37rem;
         display: grid;
         grid-template-columns: repeat(4, 1fr);
         grid-template-rows: repeat(5, 1fr);
-        gap: 1rem;
-        margin-top: 1rem;
+        gap: 1.2rem;
+        margin-top: 2rem;
       }
 
+      /* Buttons with 3D effect */
       .btn {
         display: flex;
         justify-content: center;
         align-items: center;
-
-        border-radius: 0.2rem;
-        background-color: #ffcb46;
+        height: 6rem;
+        background: linear-gradient(145deg, #ffcc57, #ffb53d);
+        border-radius: 0.5rem;
         font-size: 1.8rem;
+        color: #212121;
+        box-shadow: 0 6px 10px rgba(0, 0, 0, 0.3);
         cursor: pointer;
+        transition: all 0.2s ease;
       }
 
-      .btn:hover {
-        background-color: #fff;
+      /* Button press effect */
+      .btn:active {
+        transform: translateZ(-15px); /* Press down */
+        box-shadow: inset 0 4px 8px rgba(0, 0, 0, 0.5);
       }
 
       .btn:last-child {
-        background-color: #00ff0d;
+        background: linear-gradient(145deg, #00ff0d, #00d40b);
       }
     </style>
   </head>
@@ -85,19 +100,19 @@
         <div class="btn btn_clear_current">CE</div>
         <div class="btn btn_backspace">BS</div>
         <div class="btn btn_percentage">%</div>
-        <div class="btn btn_divide">/</div>
+        <div class="btn btn_operator btn_divide">/</div>
         <div class="btn btn_seven">7</div>
         <div class="btn btn_eight">8</div>
         <div class="btn btn_nine">9</div>
-        <div class="btn btn_multiply">*</div>
+        <div class="btn btn_operator btn_multiply">*</div>
         <div class="btn btn_four">4</div>
         <div class="btn btn_five">5</div>
         <div class="btn btn_six">6</div>
-        <div class="btn btn_minus">-</div>
+        <div class="btn btn_operator btn_minus">-</div>
         <div class="btn btn_one">1</div>
         <div class="btn btn_two">2</div>
         <div class="btn btn_three">3</div>
-        <div class="btn btn_plus">+</div>
+        <div class="btn btn_operator btn_plus">+</div>
         <div class="btn btn_clear_all">C</div>
         <div class="btn btn_zero">0</div>
         <div class="btn btn_dot">.</div>
